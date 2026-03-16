@@ -1,0 +1,31 @@
+# MCP
+fastmcp>=0.4.0
+
+# PDF parsing
+PyMuPDF>=1.24.0
+
+# Chunking
+tiktoken>=0.7.0
+
+# Embeddings + LLM
+openai>=1.35.0
+anthropic>=0.30.0
+
+# Google Drive download
+gdown>=5.1.0
+
+# Vector store
+weaviate-client>=4.6.0
+
+# Observability
+langsmith>=0.1.80
+structlog>=24.2.0
+
+# Evaluation
+ragas>=0.1.14
+datasets>=2.20.0
+
+# Env
+python-dotenv>=1.0.0
+
+pydantic>=2.7.0
