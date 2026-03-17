@@ -179,13 +179,38 @@ python3 ingest.py
 # Use --force to re-index from scratch
 ```
 
-### 5. Run the demo
+### 5. Run the demo (no Claude Desktop needed)
 
 ```bash
 python3 test_server.py
 ```
 
-### 6. Connect to Claude Desktop (optional)
+Runs all 3 tools directly with 5 real questions from the PDFs. No MCP protocol layer needed. This is the quickest way to verify the system works end to end.
+
+### 6. Run the MCP server directly
+
+```bash
+python3 src/mcp_server.py
+```
+
+You will see:
+
+```
+server_starting     name=nexla-document-qa
+already_indexed     status=skipped  pdfs=5
+weaviate_connected
+server_ready        tools=['query_documents', 'list_documents', 'get_document_info']
+```
+
+The server now waits for MCP tool calls over stdin. To confirm MCP protocol compliance, test it manually:
+
+```bash
+echo '{"jsonrpc":"2.0","id":1,"method":"tools/list","params":{}}' | python3 src/mcp_server.py
+```
+
+This returns the full tool schema for all 3 tools confirming the server is MCP compliant.
+
+### 7. Connect to Claude Desktop (optional)
 
 Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 
@@ -193,14 +218,22 @@ Add to `~/Library/Application Support/Claude/claude_desktop_config.json`:
 {
   "mcpServers": {
     "nexla-document-qa": {
-      "command": "python3",
-      "args": ["/full/path/to/nexla-mcp/src/mcp_server.py"]
+      "command": "/full/path/to/nexla-mcp/.venv/bin/python3",
+      "args": ["/full/path/to/nexla-mcp/src/mcp_server.py"],
+      "env": {
+        "OPENAI_API_KEY": "your_key",
+        "FIREWORKS_API_KEY": "your_key",
+        "LANGSMITH_API_KEY": "your_key",
+        "WEAVIATE_HOST": "localhost",
+        "WEAVIATE_PORT": "8080",
+        "WEAVIATE_GRPC_PORT": "50051"
+      }
     }
   }
 }
 ```
 
-Restart Claude Desktop. Ask any question — Claude will call `query_documents` automatically.
+Restart Claude Desktop. Look for the hammer icon at the bottom of the chat — click it to confirm all 3 tools are registered. Then ask any question and Claude will call `query_documents` automatically.
 
 ---
 
@@ -415,7 +448,7 @@ The workflow was: I designed the architecture first (data flow, module boundarie
 
 ### What Claude Code got right
 
-Boilerplate was near-perfect. The Weaviate schema definition, the tiktoken chunking loop, the OpenAI embeddings batching with retry logic, the structlog configuration — Claude Code wrote all of these faster and more correctly than I would have written them manually. It also caught edge cases I would have missed, like the `dominant_baseline="central"` SVG attribute and the `remaining_ok=True` flag in gdown.
+Boilerplate was near-perfect. The Weaviate schema definition, the tiktoken chunking loop, the OpenAI embeddings batching with retry logic, the structlog configuration — Claude Code wrote all of these faster and more correctly. It also caught edge cases I would have missed, like the `dominant_baseline="central"` SVG attribute and the `remaining_ok=True` flag in gdown.
 
 ### What I overrode
 
