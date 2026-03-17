@@ -462,7 +462,7 @@ I replaced every layer: Weaviate for hybrid search instead of ChromaDB, Firework
 
 ### What I learned
 
-Claude Code is genuinely useful for implementation velocity — modules that would take me 45 minutes to write carefully took 5 minutes with Claude Code doing the first draft. But the value of AI tooling in forward-deployed work is not replacing engineering judgment. It is compressing the time between architectural decisions and working code.
+Claude Code is genuinely useful for implementation velocity — modules that would take me 45 minutes to write carefully took 10 minutes with Claude Code doing the first draft. But the value of AI tooling in forward-deployed work is not replacing engineering judgment. It is compressing the time between architectural decisions and working code.
 
 The engineers who get the most from these tools are the ones who have strong enough architectural judgment to know when the AI's suggestion is good and when it is optimizing for the wrong thing. Without that judgment, you end up with a technically impressive system that does not actually solve the problem well.
 
